@@ -1,0 +1,40 @@
+{
+    "idea": "a drugstore in rajpura punjab",
+    "timestamp": "2025-09-08T10:52:35.724931",
+    "product_plan": {
+        "product_name": "Rajpura Medics",
+        "tagline": "Your neighborhood pharmacy in Rajpura.",
+        "target_audience": "Residents of Rajpura and surrounding areas.",
+        "mvp_features": [
+            "Prescription dispensing",
+            "Over-the-counter medication",
+            "Basic healthcare products"
+        ]
+    },
+    "design_plan": {
+        "app_layout": "sidebar",
+        "feature_designs": [
+            {
+                "feature": "Prescription dispensing",
+                "components": [
+                    "selectbox",
+                    "button"
+                ]
+            },
+            {
+                "feature": "Over-the-counter medication",
+                "components": [
+                    "multiselect",
+                    "slider"
+                ]
+            },
+            {
+                "feature": "Basic healthcare products",
+                "components": [
+                    "checkbox",
+                    "text_input"
+                ]
+            }
+        ]
+    }
+}

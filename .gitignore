@@ -1,0 +1,29 @@
+# === Python Backend ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.env
+venv/
+env/
+*.log
+
+# === Node / React Frontend ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.DS_Store
+
+# === Common Editor & OS Junk ===
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# === Cache & Build ===
+*.cache/
+*.temp/
+*.bak
+*.swp

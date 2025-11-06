@@ -1,0 +1,17 @@
+@import "tailwindcss";
+/*
+  --- CSS Fix for Password Icon ---
+  This hides the browser's default "show password" icon
+  that appears inside password input fields.
+*/
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+input[type="password"]::-webkit-reveal,
+input[type="password"]::-webkit-clear-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+  margin: 0;
+}
