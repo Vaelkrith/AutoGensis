@@ -20,7 +20,7 @@ const HowItWorksPage: React.FC = () => {
       </p>
 
       <div className="grid md:grid-cols-3 gap-8 text-left">
-        {/* Step 1 Card */}
+
         <div className="bg-slate-800 p-8 rounded-xl border border-slate-700">
           <div className="flex items-center mb-4">
             <div className="bg-sky-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4">1</div>
@@ -31,7 +31,6 @@ const HowItWorksPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Step 2 Card */}
         <div className="bg-slate-800 p-8 rounded-xl border border-slate-700">
           <div className="flex items-center mb-4">
             <div className="bg-sky-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4">2</div>
@@ -42,7 +41,6 @@ const HowItWorksPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Step 3 Card */}
         <div className="bg-slate-800 p-8 rounded-xl border border-slate-700">
           <div className="flex items-center mb-4">
             <div className="bg-sky-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4">3</div>

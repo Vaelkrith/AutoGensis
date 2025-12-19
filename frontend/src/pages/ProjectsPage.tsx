@@ -1,21 +1,11 @@
-// --------------------------------------------------------------------------
-// AutoGenesis: Phase 5, Step 5.4c - FIX "undefined" Project ID Bug
-//
-// This is the frontend half of the fix.
-// 1. The 'Project' interface is updated to expect '_id' instead of 'id'.
-// 2. All component logic (keys, download handlers) now uses 'project._id'.
-// --------------------------------------------------------------------------
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 
 const API_URL = 'http://127.0.0.1:8000';
 
-// --- THIS IS THE FIX (Part 1) ---
-// The interface now expects '_id' to match the JSON from the API
 interface Project {
-    _id: string; // <-- WAS 'id'
+    _id: string;
     owner_id: string;
     idea: string;
     title: string | null;
@@ -25,11 +15,9 @@ interface Project {
 const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNavigate }) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    // Add a new state to track which project is downloading
     const [downloadingId, setDownloadingId] = useState<string | null>(null);
     const { token, logout } = useAuth();
 
-    // Helper to create auth headers (for non-download requests)
     const getAuthHeaders = () => {
          return {
             'Content-Type': 'application/json',
@@ -58,7 +46,7 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
                 }
 
                 const data: Project[] = await response.json();
-                setProjects(data); // Save the array of projects
+                setProjects(data);
 
             } catch (error) {
                 console.error("Failed to fetch projects:", error);
@@ -69,26 +57,23 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
         };
 
         fetchProjects();
-    }, [token, logout]); // Re-run if token changes
+    }, [token, logout]);
 
 
-    // --- NEW: FUNCTION TO HANDLE PROJECT DOWNLOAD ---
     const handleDownload = async (project: Project) => {
         if (!token) {
             toast.error("You are not logged in.");
             return;
         }
         
-        // --- THIS IS THE FIX (Part 2) ---
-        setDownloadingId(project._id); // Use _id
+        setDownloadingId(project._id);
         toast.loading('Preparing your download...');
 
         try {
-            // --- THIS IS THE FIX (Part 3) ---
             const response = await fetch(`${API_URL}/api/projects/${project._id}/download`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}` // Send token for auth
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
@@ -102,18 +87,15 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
                  throw new Error('Failed to download project.');
             }
 
-            // Convert the response into a file (blob)
             const blob = await response.blob();
-            // Create a temporary URL for the blob
             const url = window.URL.createObjectURL(blob);
             
-            // Create a temporary link element to trigger the download
             const a = document.createElement('a');
             a.href = url;
             const filename = `${project.title || 'autogenesis_project'}.zip`;
-            a.download = filename; // Set the filename
-            document.body.appendChild(a); // Add link to the page
-            a.click(); // Programmatically click the link
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
             
             // Clean up
             document.body.removeChild(a);
@@ -127,7 +109,7 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
             toast.dismiss();
             toast.error(error instanceof Error ? error.message : "Could not download project.");
         } finally {
-            setDownloadingId(null); // Clear loading state
+            setDownloadingId(null);
         }
     };
 
@@ -147,7 +129,6 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
             </div>
 
             {isLoading ? (
-                // --- Loading Spinner ---
                 <div className="flex justify-center items-center h-64">
                     <svg className="animate-spin h-10 w-10 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -155,7 +136,6 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
                     </svg>
                 </div>
             ) : projects.length === 0 ? (
-                // --- Empty State ---
                 <div className="text-center bg-slate-800 border-2 border-dashed border-slate-700 rounded-xl py-20">
                     <h2 className="text-2xl font-bold text-white mb-2">No Projects Yet</h2>
                     <p className="text-slate-400 mb-6">
@@ -169,12 +149,10 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
                     </button>
                 </div>
             ) : (
-                // --- Project Grid ---
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {projects.map((project) => (
                         <div 
-                            // --- THIS IS THE FIX (Part 4) ---
-                            key={project._id} // Use _id
+                            key={project._id}
                             className="bg-slate-800 rounded-xl border border-slate-700 flex flex-col overflow-hidden transition-all duration-300 hover:border-sky-500 hover:-translate-y-1 shadow-lg"
                         >
                             <div className="p-6">
@@ -190,11 +168,9 @@ const ProjectsPage: React.FC<{ onNavigate?: (path: string) => void }> = ({ onNav
                                     Created: {new Date(project.created_at).toLocaleDateString()}
                                 </span>
                                 
-                                {/* --- UPDATED DOWNLOAD BUTTON --- */}
                                 <button 
                                     onClick={() => handleDownload(project)}
-                                    // --- THIS IS THE FIX (Part 5) ---
-                                    disabled={downloadingId === project._id} // Use _id
+                                    disabled={downloadingId === project._id}
                                     className="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors flex items-center disabled:opacity-50"
                                 >
                                     {downloadingId === project._id ? (

@@ -1,17 +1,9 @@
-// --------------------------------------------------------------------------
-// AutoGenesis: Phase 5, Step 5.3b - IMPROVED Profile Page (v2 - Tabbed)
-//
-// This update implements a professional, tabbed interface for
-// "Account Settings" based on user feedback, removing redundant navigation.
-// --------------------------------------------------------------------------
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 
 const API_URL = 'http://127.0.0.1:8000';
 
-// Interface for the user data from /api/users/me
 interface UserProfile {
     name: string;
     email: string;
@@ -20,14 +12,12 @@ interface UserProfile {
     created_at: string;
 }
 
-// Helper to get user initials for the avatar
 const getInitials = (name: string) => {
     const names = name.split(' ');
     const initials = names.map(n => n[0]).join('');
     return initials.slice(0, 2).toUpperCase();
 };
 
-// Helper to format the profession string
 const formatProfession = (profession: string | null) => {
     if (!profession) return "Not specified";
     return profession.charAt(0).toUpperCase() + profession.slice(1).replace(/-/g, ' ').replace(/_/g, ' ');
@@ -39,7 +29,7 @@ type ProfileTab = 'profile' | 'security' | 'plan';
 const ProfilePage: React.FC = () => {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<ProfileTab>('profile'); // State for active tab
+    const [activeTab, setActiveTab] = useState<ProfileTab>('profile');
     const { token, logout } = useAuth();
 
     useEffect(() => {
@@ -88,7 +78,6 @@ const ProfilePage: React.FC = () => {
             case 'profile':
                 return (
                     <div className="space-y-4">
-                        {/* Avatar and Name Header */}
                         <div className="flex items-center mb-8 p-4">
                             <div className="w-20 h-20 rounded-full bg-sky-600 flex items-center justify-center text-white text-3xl font-bold mr-6 flex-shrink-0">
                                 {getInitials(userProfile.name)}
@@ -99,7 +88,6 @@ const ProfilePage: React.FC = () => {
                             </div>
                         </div>
                         
-                        {/* Account Details List */}
                         <div className="space-y-4">
                             <div className="flex flex-col sm:flex-row p-4 bg-slate-900/50 rounded-lg">
                                 <span className="font-semibold text-slate-300 w-32 mb-1 sm:mb-0">Name</span>
@@ -169,7 +157,6 @@ const ProfilePage: React.FC = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen container mx-auto px-4 py-28 flex items-center justify-center">
-                {/* Loading Spinner */}
                 <svg className="animate-spin h-10 w-10 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -185,7 +172,6 @@ const ProfilePage: React.FC = () => {
             </h1>
             
             <div className="bg-slate-800 rounded-xl border border-slate-700 max-w-4xl mx-auto">
-                {/* --- Tab Navigation --- */}
                 <nav className="flex border-b border-slate-700">
                     <TabButton
                         title="Profile"
@@ -203,8 +189,6 @@ const ProfilePage: React.FC = () => {
                         onClick={() => setActiveTab('plan')}
                     />
                 </nav>
-
-                {/* --- Tab Content --- */}
                 <div className="p-8">
                     {renderTabContent()}
                 </div>
@@ -213,7 +197,6 @@ const ProfilePage: React.FC = () => {
     );
 };
 
-// --- Helper component for tabs ---
 interface TabButtonProps {
     title: string;
     isActive: boolean;

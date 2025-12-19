@@ -1,6 +1,3 @@
-// --------------------------------------------------------------------------
-// AutoGenesis: Phase 6 - Add Terms of Service Page
-// --------------------------------------------------------------------------
 import React from 'react';
 
 const TermsOfServicePage: React.FC = () => {

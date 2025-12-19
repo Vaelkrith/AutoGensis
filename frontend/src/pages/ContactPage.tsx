@@ -1,6 +1,3 @@
-// --------------------------------------------------------------------------
-// AutoGenesis: Phase 6 - Add Contact Page
-// --------------------------------------------------------------------------
 import React from 'react';
 
 const ContactPage: React.FC = () => {
@@ -12,7 +9,6 @@ const ContactPage: React.FC = () => {
                     We'd love to hear from you! Whether you have a question about features, trials, pricing, or anything else, our team is ready to answer all your questions.
                 </p>
                 
-                {/* This is a simple placeholder form. It doesn't send data yet. */}
                 <form className="bg-slate-800 p-8 rounded-xl border border-slate-700 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>

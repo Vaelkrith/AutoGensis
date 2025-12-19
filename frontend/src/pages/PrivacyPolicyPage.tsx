@@ -1,6 +1,3 @@
-// --------------------------------------------------------------------------
-// AutoGenesis: Phase 6 - Add Privacy Policy Page
-// --------------------------------------------------------------------------
 import React from 'react';
 
 const PrivacyPolicyPage: React.FC = () => {

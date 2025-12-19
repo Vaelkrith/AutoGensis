@@ -1,13 +1,5 @@
-// --------------------------------------------------------------------------
-// AutoGenesis: Phase 5 (Frontend), Task 2 - Replace Alerts with Toasts
-//
-// This update removes the 'error' state and replaces all user feedback
-// with 'react-hot-toast' notifications.
-// --------------------------------------------------------------------------
-
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-// --- NEW IMPORT ---
 import { toast } from 'react-hot-toast';
 
 const API_URL = 'http://127.0.0.1:8000';
@@ -20,14 +12,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    // const [error, setError] = useState(''); // --- REMOVED (Replaced by toast)
     const [isLoading, setIsLoading] = useState(false);
     const [showResendOtp, setShowResendOtp] = useState(false);
     const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // setError(''); // No longer needed
         setShowResendOtp(false);
         setIsLoading(true);
 
@@ -45,7 +35,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
             if (!response.ok) {
                 if (response.status === 403 && data.detail?.includes("Email not verified")) {
-                    // --- REPLACE setError ---
                     toast.error(data.detail);
                     setShowResendOtp(true);
                 } else {
@@ -55,7 +44,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                 console.log("Login successful, received token data:", data);
                 if (data.access_token) {
                     login(data.access_token);
-                    // --- REPLACE ALERT ---
                     toast.success('Logged in successfully!');
                     onNavigate('/');
                 } else {
@@ -63,7 +51,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                 }
             }
         } catch (err) {
-            // --- REPLACE setError ---
             const message = err instanceof Error ? err.message : 'An unknown error occurred.';
             toast.error(message);
             console.error("Login error:", err);
@@ -74,7 +61,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
     const handleResendOtp = async () => {
         setIsLoading(true);
-        // setError(''); // No longer needed
         setShowResendOtp(false);
 
         try {
@@ -86,12 +72,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
             const data = await response.json();
             if (!response.ok) throw new Error(data.detail || 'Failed to resend OTP.');
             
-            // --- ADD SUCCESS TOAST ---
             toast.success(data.message || "New OTP sent!");
             onNavigate('/verify-otp', { email });
 
         } catch (err) {
-            // --- REPLACE setError ---
             const message = err instanceof Error ? err.message : 'An unknown error occurred.';
             toast.error(message);
             setShowResendOtp(true);
@@ -112,13 +96,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                     onSubmit={handleSubmit}
                     className="bg-slate-800 p-8 rounded-xl border border-slate-700 space-y-6"
                 >
-                    {/* Email Input */}
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
                         <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isLoading} className="w-full bg-slate-700 border border-slate-600 rounded-lg p-3 text-white placeholder-slate-400 focus:ring-2 focus:ring-sky-500 focus:outline-none transition disabled:opacity-50" placeholder="you@example.com" />
                     </div>
 
-                    {/* Password Input (with UI fix) */}
                     <div>
                         <div className="flex justify-between items-center mb-2">
                             <label htmlFor="password" className="block text-sm font-medium text-slate-300">Password</label>
@@ -132,10 +114,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                         </div>
                     </div>
 
-                    {/* --- REMOVED {error && ...} --- */}
-                    {/* Toasts handle all errors now */}
-
-                    {/* Conditionally render Resend OTP button */}
+         
                     {showResendOtp && (
                         <button
                             type="button"
@@ -147,7 +126,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                         </button>
                     )}
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         disabled={isLoading}
